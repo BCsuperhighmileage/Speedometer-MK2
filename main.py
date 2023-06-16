@@ -9,6 +9,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.animation as animation
 from scipy.ndimage.filters import uniform_filter1d
 import matplotlib.style as style
+import webbrowser # this is for the hyperlink for the documentation button
+import sys # this is for the exit button function
 
 
 
@@ -19,7 +21,7 @@ class dial():
             z = dial.GUI.ParsePacket()
             meter1.set(z)
             print(z)
-            time.sleep(.1) # sleep for 1 second or else it will look weird
+            time.sleep(time_between_updates) # sleeps that may the dial is smoothed out
     class GUI():
         def ParsePacket():
             n = random.randint(0, 10)
@@ -36,7 +38,42 @@ def update_plot(frame):
     plot.set_xlabel('MPH')
     plot.set_ylabel('TIME')
 
+def documentation_link():
+    webbrowser.open_new(r"https://github.com/BCsuperhighmileage/Speedometer-MK2")
 
+
+def exit_function():
+    timestamps_file = open("timestamps.csv", "w")
+    timestamps_file.truncate() # clears the csv file
+    timestamps_file.close()
+    sys.exit()
+
+def reset_graph():
+    fig.clf() # clears the old graph
+
+    # creates the new graph
+    fig = Figure(figsize=(10, 5.1), dpi=100)
+    plot = fig.add_subplot(111)
+    graph = FigureCanvasTkAgg(fig, master=window)
+    graph.draw()
+    graph.get_tk_widget().grid(column=1, row=0, columnspan=4, sticky='NESW')
+
+    # Define the animation
+    ani = animation.FuncAnimation(fig, update_plot, interval=1000)
+
+    # Set the x-axis and y-axis labels
+    plot.set_xlabel('TIME')
+    plot.set_ylabel('MPH')
+
+def reset_program():
+    reset_graph()
+    timestamps_file = open("timestamps.csv", "w")
+    timestamps_file.truncate() # clears the csv file
+    timestamps_file.close()
+    #TODO have this reset the incoming data flow
+
+
+time_between_updates = 0.1
 
 # setting up the colors of the graph
 # view all the colors available for tkinter: http://cs111.wellesley.edu/archive/cs111_fall14/public_html/labs/lab12/tkintercolor.html
@@ -82,11 +119,6 @@ graph_label.place(x=800, y=500)
 
 
 
-
-
-
-
-
 # Create a frame for the speedometer
 speedometer_frame = tk.Frame(master=window)
 speedometer_frame.grid(row=0, column=0, padx=40, pady=80, sticky='W')
@@ -108,6 +140,9 @@ plot = fig.add_subplot(111)
 graph = FigureCanvasTkAgg(fig, master=window)
 graph.draw()
 graph.get_tk_widget().grid(column=1, row=0, columnspan=4, sticky='NESW')
+
+
+
 
 # Define the animation
 ani = animation.FuncAnimation(fig, update_plot, interval=1000)
@@ -149,14 +184,14 @@ graph_switch_1.grid(row=2, column=0, padx=(20, 20), pady=(20, 20), sticky="nsew"
 
 
 # graph control of buttons
-graph_button_1 = ctk.CTkButton(master=control_center_frame, border_width=2, text="Reset Graph")
+graph_button_1 = ctk.CTkButton(master=control_center_frame, border_width=2, text="Reset Graph", command=reset_graph)
 graph_button_1.grid(row=0, column=3, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
-graph_button_2 = ctk.CTkButton(master=control_center_frame, border_width=2, text="Documentation") # TODO link to Github README
-graph_button_2.grid(row=1, column=3, padx=(20, 20), pady=(20, 20), sticky="nsew")
+documentation_button = ctk.CTkButton(master=control_center_frame, border_width=2, text="Documentation", command=documentation_link) # TODO link to Github README
+documentation_button.grid(row=1, column=3, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
 # Basic Function Buttons
-exit_button = ctk.CTkButton(master=control_center_frame, border_width=2, text="Exit")
+exit_button = ctk.CTkButton(master=control_center_frame, border_width=2, text="Exit", command=exit_function)
 exit_button.grid(row=0, column=1, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
 reset_button = ctk.CTkButton(master=control_center_frame, border_width=2, text="Reset")
