@@ -12,7 +12,7 @@ import matplotlib.style as style
 import webbrowser # this is for the hyperlink for the documentation button
 import sys # this is for the exit button function
 
-
+time_between_updates = 0.1
 
 #function for the dial
 class dial():
@@ -20,7 +20,6 @@ class dial():
         while True:
             z = dial.GUI.ParsePacket()
             meter1.set(z)
-            print(z)
             time.sleep(time_between_updates) # sleeps that may the dial is smoothed out
     class GUI():
         def ParsePacket():
@@ -65,6 +64,7 @@ def reset_graph():
     plot.set_xlabel('TIME')
     plot.set_ylabel('MPH')
 
+
 def reset_program():
     reset_graph()
     timestamps_file = open("timestamps.csv", "w")
@@ -73,7 +73,14 @@ def reset_program():
     #TODO have this reset the incoming data flow
 
 
-time_between_updates = 0.1
+def input_fake_data():
+    print('This is a feature coming soon: I need to make this program read real data before this function is implemented')
+    # i need to just have it active when the switch is activated
+
+def debug_mode():
+    print("debug mode is a feature under production ")
+
+
 
 # setting up the colors of the graph
 # view all the colors available for tkinter: http://cs111.wellesley.edu/archive/cs111_fall14/public_html/labs/lab12/tkintercolor.html
@@ -174,11 +181,11 @@ control_center_frame_main_text.grid(row=0, column=0, columnspan=1, padx=10, pady
 
 
 # buttons for the controls
-graph_button_1 = ctk.CTkButton(master=control_center_frame, border_width=2, text="Debug Mode")
+graph_button_1 = ctk.CTkButton(master=control_center_frame, border_width=2, text="Debug Mode", command=debug_mode)
 graph_button_1.grid(row=1, column=0, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
-graph_switch_1 = ctk.CTkSwitch(master=control_center_frame, border_width=2, text="Input Fake Data")
-graph_switch_1.grid(row=2, column=0, padx=(20, 20), pady=(20, 20), sticky="nsew")
+fake_data_switch = ctk.CTkSwitch(master=control_center_frame, border_width=2, text="Input Fake Data", command=input_fake_data)
+fake_data_switch.grid(row=2, column=0, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
 
 
@@ -194,7 +201,7 @@ documentation_button.grid(row=1, column=3, padx=(20, 20), pady=(20, 20), sticky=
 exit_button = ctk.CTkButton(master=control_center_frame, border_width=2, text="Exit", command=exit_function)
 exit_button.grid(row=0, column=1, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
-reset_button = ctk.CTkButton(master=control_center_frame, border_width=2, text="Reset")
+reset_button = ctk.CTkButton(master=control_center_frame, border_width=2, text="Reset Program", command=reset_program)
 reset_button.grid(row=1, column=1, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
 
@@ -204,6 +211,7 @@ graph_settings_slider_label.grid(row=4, column=1, columnspan=1, padx=10, pady=10
 
 graph_settings_slider_1 = ctk.CTkSlider(master=control_center_frame, from_=1, to=50, number_of_steps=49)
 graph_settings_slider_1.grid(row=5, column=1, padx=(20, 10), pady=(10, 10), sticky="ew")
+
 
 
 # slider 2
