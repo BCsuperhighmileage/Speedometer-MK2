@@ -81,6 +81,14 @@ def debug_mode():
     print("debug mode is a feature under production ")
 
 
+def mph_slider(value):
+    print('mph slider')
+    print(value)
+
+def updates_slider(value):
+    print('updates slider')
+    print(value)
+
 
 # setting up the colors of the graph
 # view all the colors available for tkinter: http://cs111.wellesley.edu/archive/cs111_fall14/public_html/labs/lab12/tkintercolor.html
@@ -206,20 +214,20 @@ reset_button.grid(row=1, column=1, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
 
 # slider 1
-graph_settings_slider_label = ctk.CTkLabel(master=control_center_frame, text="Maximum MPH(1-50)")
-graph_settings_slider_label.grid(row=4, column=1, columnspan=1, padx=10, pady=10)
+max_mph_slider_label = ctk.CTkLabel(master=control_center_frame, text="Maximum MPH(1-50)")
+max_mph_slider_label.grid(row=4, column=1, columnspan=1, padx=10, pady=10)
 
-graph_settings_slider_1 = ctk.CTkSlider(master=control_center_frame, from_=1, to=50, number_of_steps=49)
-graph_settings_slider_1.grid(row=5, column=1, padx=(20, 10), pady=(10, 10), sticky="ew")
+max_mph_slider = ctk.CTkSlider(master=control_center_frame, width=160, height=16, border_width=5.5, from_=1, to=50, number_of_steps=49, command=mph_slider)
+max_mph_slider.grid(row=5, column=1, padx=(20, 10), pady=(10, 10), sticky="ew")
 
 
 
 # slider 2
-graph_settings_slider_label = ctk.CTkLabel(master=control_center_frame, text="Number of Updates per Minute")
-graph_settings_slider_label.grid(row=4, column=2, columnspan=1, padx=10, pady=10)
+updates_per_min_slider_label = ctk.CTkLabel(master=control_center_frame, text="Number of Updates per Minute")
+updates_per_min_slider_label.grid(row=4, column=2, columnspan=1, padx=10, pady=10)
 
-graph_settings_slider_2 = ctk.CTkSlider(master=control_center_frame, from_=0, to=500, number_of_steps=50)
-graph_settings_slider_2.grid(row=5, column=2, padx=(20, 10), pady=(10, 10), sticky="ew")
+updates_per_min_slider = ctk.CTkSlider(master=control_center_frame, width=160, height=16, border_width=5.5, from_=0, to=500, number_of_steps=50, command=updates_slider)
+updates_per_min_slider.grid(row=5, column=2, padx=(20, 10), pady=(10, 10), sticky="ew")
 
 ### END of Control Center
 
